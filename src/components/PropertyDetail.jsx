@@ -6,6 +6,9 @@ import { MdOutlineLocationOn } from "react-icons/md";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import SendMessage from "./SendMessage";
+import { LuBedDouble } from "react-icons/lu";
+import { BiBath } from "react-icons/bi";
+import { BsHouseDoor } from "react-icons/bs";
 
 const PropertyDetail = () => {
     const iconStyle = {
@@ -13,7 +16,7 @@ const PropertyDetail = () => {
     };
 
     const pStyle = {
-        fontSize: "12px",
+        fontSize: "16px",
         color: "gray",
     };
 
@@ -70,8 +73,8 @@ const PropertyDetail = () => {
 
     return (
         <div className="py-10 min-h-screen">
-            <div className="flex flex-col lg:flex-row container mx-auto lg:space-x-5 justify-center">
-                <div>
+            <div className="flex flex-col md:flex-row container mx-auto md:space-x-5 justify-center">
+                {/* <div>
                     <button
                         onClick={goBack}
                         className="bg-accent flex flex-row items-center space-x-4 p-2 rounded-xl text-white"
@@ -79,7 +82,7 @@ const PropertyDetail = () => {
                         <FaArrowLeftLong />
                         Zurück
                     </button>
-                </div>
+                </div> */}
                 <div className="lg:max-w-[700px] w-full bg-white rounded-xl">
                     <div className="max-w-[700px]">
                         <img
@@ -89,25 +92,53 @@ const PropertyDetail = () => {
                         />
                     </div>
                     <div className="flex flex-col space-y-4 items-start">
-                        <h1 className="font-bold lg:text-2xl mt-4">{property.title}</h1>
-                        <p className="bg-accent font-semibold lg:text-xl p-2 text-white rounded-xl">
-                            {property.price} €
-                        </p>
+                        <h1 className="font-bold text-xl lg:text-2xl mt-4">
+                            {property.title}
+                        </h1>
                         <div className="flex flex-row mt-2 items-center">
                             <MdOutlineLocationOn style={iconStyle} />
                             <p style={pStyle}>{property.place}</p>
                         </div>
+                        <div className="flex items-center space-x-5 flex-row">
+                            <div className="flex space-x-1 flex-row items-center">
+                                <LuBedDouble style={iconStyle} />
+                                <p style={pStyle} className="text-[12px]">
+                                    {property.rooms}
+                                </p>
+                            </div>
+                            <div className="flex space-x-1 flex-row items-center">
+                                <BiBath style={iconStyle} />
+                                <p style={pStyle} className="text-[12px]">
+                                    {property.baths}
+                                </p>
+                            </div>
+                            <div className="flex space-x-1 flex-row items-center">
+                                <BsHouseDoor style={iconStyle} />
+                                <p style={pStyle} className="text-[12px]">
+                                    {property.qm} qm²
+                                </p>
+                            </div>
+                        </div>
+                        <p className="bg-accent font-semibold lg:text-xl p-2 text-white rounded-xl">
+                            {property.price} €
+                        </p>
                     </div>
                 </div>
                 <div>
+                    <div className="h-full hidden md:block">
+                        <SendMessage
+                            propertyTitle={property.title}
+                            propertyOwner={property.author.id}
+                        />
+                    </div>
                     <button
                         onClick={openSendMessagePopup}
-                        className="bg-accent w-full text-white p-2 rounded-xl mt-4"
+                        className="bg-accent w-full block md:hidden text-white p-2 rounded-xl mt-4"
                     >
                         Nachricht senden
                     </button>
                     {showSendMessage && (
-                        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+                        <div className="fixed md:hidden top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
                             <div className="bg-white p-4 rounded-xl">
                                 <SendMessage
                                     propertyTitle={property.title}

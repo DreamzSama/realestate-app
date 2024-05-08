@@ -71,7 +71,7 @@ const CreateListing = () => {
     };
 
     return (
-        <div className="bg-white p-4 max-w-[500px] rounded-xl">
+        <div className="bg-white p-4 max-w-[500px] max-h-[600px] overflow-y-auto rounded-xl">
             <h2 className="font-bold text-2xl mb-5">Immobilie inserieren</h2>
             <form className="flex flex-col space-y-3">
                 <input

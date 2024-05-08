@@ -6,6 +6,7 @@ import { auth, db } from "../conf/firebase"; // Make sure to import your firebas
 const SendMessage = ({ propertyOwner, currentUser, propertyTitle }) => {
     const [name, setName] = useState("");
     const [message, setMessage] = useState("");
+    const [contact, setContact] = useState("");
     const [reference, setReference] = useState("");
 
     const inputStyle = {
@@ -32,6 +33,7 @@ const SendMessage = ({ propertyOwner, currentUser, propertyTitle }) => {
         });
 
         setName("");
+        setContact("");
         setMessage("");
         setReference("");
     };
@@ -46,6 +48,13 @@ const SendMessage = ({ propertyOwner, currentUser, propertyTitle }) => {
                     onChange={(e) => setName(e.target.value)}
                     type="text"
                     placeholder="Ihr Name"
+                />
+                <input
+                    className="focus:outline-1 transform duration-200 ease-in-out outline-orange-500"
+                    style={inputStyle}
+                    onChange={(e) => setContact(e.target.value)}
+                    type="text"
+                    placeholder="Wo können wir Sie kontaktieren?"
                 />
                 <label htmlFor="ref">Betreff</label>
                 <input

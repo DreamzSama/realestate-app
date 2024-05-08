@@ -7,13 +7,16 @@ import {
     query,
     deleteDoc,
     doc,
+    updateDoc,
 } from "firebase/firestore";
 import Listing from "../components/Listing";
 import CreateListing from "../components/CreateListing";
 import mainSVG from "../img/main.svg";
+import EditListingModal from "../components/EditListingModal";
 
 const UserPosts = ({ currentUser }) => {
     const [userPosts, setUserPosts] = useState([]);
+    const [editingProperty, setEditingProperty] = useState(null);
     const propertyCollectionRef = collection(db, "property");
 
     useEffect(() => {
@@ -54,9 +57,38 @@ const UserPosts = ({ currentUser }) => {
         }
     };
 
+    const openEditModal = (property) => {
+        setEditingProperty(property);
+    };
+
+    const closeEditModal = () => {
+        setEditingProperty(null);
+    };
+
+    const saveEditedProperty = async (editedProperty) => {
+        try {
+            // Aktualisiere den Beitrag in der Datenbank
+            await updateDoc(
+                doc(propertyCollectionRef, editedProperty.id),
+                editedProperty
+            );
+
+            // Aktualisiere die Liste der Benutzerbeiträge
+            const updatedPosts = userPosts.map((property) =>
+                property.id === editedProperty.id ? editedProperty : property
+            );
+            setUserPosts(updatedPosts);
+
+            // Schließe das Bearbeitungsmodal
+            closeEditModal();
+        } catch (error) {
+            console.error("Error updating property:", error);
+        }
+    };
+
     return (
-        <div className="bg-bgGray">
-            <div className="mx-auto container py-10">
+        <div className="bg-bgGray py-20">
+            <div className="mx-auto container">
                 <div className="flex justify-center flex-col lg:flex-row bg-accent mb-10 rounded-xl p-5 items-center lg:justify-between">
                     <div className="w-full mb-10 lg:mb-0">
                         <CreateListing />
@@ -72,6 +104,22 @@ const UserPosts = ({ currentUser }) => {
                     <div className="grid lg:grid-cols-4 justify-items-center gap-10">
                         {userPosts.map((property) => (
                             <div key={property.id} className="">
+                                <div>
+                                    <button
+                                        onClick={() =>
+                                            deleteProperty(property.id)
+                                        }
+                                        className="mt-2 bg-red-500 text-white px-4 py-2 rounded"
+                                    >
+                                        Löschen
+                                    </button>
+                                    <button
+                                        onClick={() => openEditModal(property)} // Öffne das Bearbeitungsmodal
+                                        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+                                    >
+                                        Bearbeiten
+                                    </button>
+                                </div>
                                 <Listing
                                     propertyTypes={property.propertyType}
                                     price={property.price}
@@ -83,16 +131,17 @@ const UserPosts = ({ currentUser }) => {
                                     qm={property.qm}
                                     imageSrc={property.imageUrl}
                                 />
-                                <button
-                                    onClick={() => deleteProperty(property.id)}
-                                    className="mt-2 bg-red-500 text-white px-4 py-2 rounded"
-                                >
-                                    Löschen
-                                </button>
                             </div>
                         ))}
                     </div>
                 </div>
+                {editingProperty && (
+                    <EditListingModal
+                        property={editingProperty}
+                        onSave={saveEditedProperty}
+                        onClose={closeEditModal}
+                    />
+                )}
             </div>
         </div>
     );

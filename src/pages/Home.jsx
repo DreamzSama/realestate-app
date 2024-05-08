@@ -5,6 +5,7 @@ import Listing from "../components/Listing";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { FaCirclePlus } from "react-icons/fa6";
 
 const Home = () => {
     const [propertyList, setPropertyList] = useState([]);
@@ -25,7 +26,7 @@ const Home = () => {
                 id: doc.id,
             }));
             setPropertyList(properties);
-            
+
             setTimeout(() => {
                 setLoading(false);
             }, 500);
@@ -62,6 +63,13 @@ const Home = () => {
     return (
         <div className="bg-[#F5F5F5] min-h-screen">
             <div className="mx-auto container py-10">
+                <Link to="/profile">
+                    <div className="inline-flex cursor-pointer justify-start flex-row items-center mb-5 space-x-2 bg-accent rounded-xl p-2 text-white hover:bg-orange-700">
+                        <p className="">Immobilie verkaufen</p>
+                        <FaCirclePlus />
+                    </div>
+                </Link>
+
                 <SearchBar
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
