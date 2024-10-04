@@ -68,6 +68,8 @@ const CreateListing = () => {
         setPrice("");
         setCompany("");
         setImage(null);
+
+        window.location.reload();
     };
 
     return (
